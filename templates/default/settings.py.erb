@@ -18,8 +18,12 @@ def generate_icon(email):
     import hashlib
     import urllib
     size = 40
-    default = 'http://gitpaste.com/static/img/default-icon.png'
+    default = '/static/img/default-icon.png'
+    <% if @auth_google -%>
+    gravatar = "https://secure.gravatar.com/avatar/%s?%s" % (
+    <% else -%>
     gravatar = "http://www.gravatar.com/avatar/%s?%s" % (
+    <% end -%>
             hashlib.md5(email.lower()).hexdigest(),
             urllib.urlencode({'d':default, 's':str(size)}))
     return gravatar
