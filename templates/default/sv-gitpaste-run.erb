@@ -1,0 +1,12 @@
+#!/bin/sh
+exec 2>&1
+
+# since we're calling a script
+# changes to listen params (ip/port)
+# don't trigger a reload of the run script.
+# so we add them here as comments
+#
+# gitpaste running on <%= @options[:gitpaste_address] %>:<%= @options[:gitpaste_port] %>
+#
+cd <%= @options[:homedir] %>
+exec chpst -u <%= @options[:gitpaste_user] %>:<%= @options[:gitpaste_group] %> <%= @options[:venv_dir] %>/bin/gitpaste.sh

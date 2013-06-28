@@ -1,0 +1,51 @@
+<VirtualHost *:80>
+	ServerName <%= @server_name %>
+	<% @aliases.each do |a| -%>
+	ServerAlias <%= a %>
+        <% end -%>
+        ErrorLog /var/log/apache2/gitpaste.error.log
+        CustomLog /var/log/apache2/gitpaste.access.log common
+	Redirect permanent / https://<%= @server_name %>
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName <%= @server_name %>
+	<% @aliases.each do |a| -%>
+	ServerAlias <%= a %>
+        <% end -%>
+	DocumentRoot <%= @docroot %>
+        ErrorLog /var/log/apache2/gitpaste.error.log
+        CustomLog /var/log/apache2/gitpaste.access.log common
+	SSLEngine On
+	SSLCertificateFile /etc/apache2/ssl/<%= @ssl_cert %>
+	SSLCertificateKeyFile /etc/apache2/ssl/<%= @ssl_key %>
+
+        <Proxy *>
+		Order Allow,Deny
+		Allow from all
+	</Proxy>
+	RequestHeader set X-Forwarded-Proto "https" env=HTTPS
+
+        <Location "/">
+		<% if @auth_google -%>
+                AuthType OpenID
+		require valid-user
+
+		AuthOpenIDTrusted ^https://www.google.com/accounts/o8/ud
+		AuthOpenIDDBLocation <%= @db_directory %>/<%= @db_file %>
+                AuthOpenIDSingleIdP https://www.google.com/accounts/o8/id
+		AuthOpenIDAXRequire email http://axschema.org/contact/email <%= @email_regex %>
+		AuthOpenIDAXUsername email
+		AuthOpenIDSecureCookie On
+		AuthOpenIDCookieName <%= @cookie_name %>
+		
+		RewriteEngine on
+		RewriteCond %{LA-U:REMOTE_USER} (.+)
+		RewriteRule . - [E=RU:%1]
+		RequestHeader set REMOTE_USER %{RU}e
+		<% end -%>
+
+		ProxyPass http://<%= @gitpaste_address %>:<%= @gitpaste_port %>/
+		ProxyPassReverse http://<%= @gitpaste_address %>:<%= @gitpaste_port %>/
+        </Location>
+</VirtualHost>

@@ -1,0 +1,36 @@
+default['gitpaste']['gitpaste_address'] = node.ipaddress
+default['gitpaste']['gitpaste_port'] = 8080
+default['gitpaste']['user'] = 'gitpaste'
+default['gitpaste']['group'] = 'gitpaste'
+default['gitpaste']['homedir'] = '/home/gitpaste'
+default['gitpaste']['svc_type'] = 'runit'
+default['gitpaste']['svc_cookbook'] = 'gitpaste'
+default['gitpaste']['virtualenv'] = 'gitpaste'
+default['gitpaste']['virtualenv_directory'] = node['gitpaste']['homedir']+'/'+node['gitpaste']['virtualenv']
+default['gitpaste']['virtualenv_interpreter'] = 'python2.7'
+default['gitpaste']['appdir'] = node['gitpaste']['homedir']+'/app/'
+default['gitpaste']['repository'] = 'git://github.com/justinvh/gitpaste.git'
+default['gitpaste']['sha'] = 'f55d4ed8e38ad0e4ffd14e06f6b74652ab3fb0e5'
+default['gitpaste']['pips'] = {
+  "Django" => "1.3.1",
+  "GitPython" => "0.3.2.RC1",
+  "Pygments" => "1.4",
+  "async" => "0.6.1",
+  "gitdb" => "0.5.4",
+  "smmap" => "0.8.1",
+  "wsgiref" => "0.1.2",
+  "Whoosh" => "2.3.2",
+  "django-haystack" => "1.2.6",
+  "repoze.timeago" => "0.5",
+  "Markdown" => "2.1.0",
+  "pytz" => "2011n",
+  "beautifulsoup" => "3.2.1"}
+default['gitpaste']['allow_anonymous_posts'] = "False" # python bool
+default['gitpaste']['allow_anonymous_access'] = "False" # python bool
+default['gitpaste']['google_apps_auth'] = false
+default['gitpaste']['admins'] = {} # e.g. {"userone" => "emailone", "usertwo" => "emailtwo"}
+default['gitpaste']['timezone'] = 'UTC'
+default['gitpaste']['secret_key'] = ''
+
+default['gitpaste']['settings_template'] = 'settings.py.erb'
+default['gitpaste']['settings_cookbook'] = 'gitpaste'

@@ -1,0 +1,4 @@
+#!/bin/bash
+source <%= @venv_dir %>/bin/activate
+cd <%= @app_dir %>/saic
+exec python manage.py runserver <%= @listen_address %>:<%= @listen_port %> --noreload
