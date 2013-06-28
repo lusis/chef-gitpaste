@@ -16,5 +16,5 @@ recipe "gitpaste::apache", "Apache SSL front-end for gitpaste"
 end
 
 %w{ubuntu debian}.each do |os|
-  support os
+  supports os
 end
