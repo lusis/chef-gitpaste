@@ -47,5 +47,10 @@
 
 		ProxyPass http://<%= @gitpaste_address %>:<%= @gitpaste_port %>/
 		ProxyPassReverse http://<%= @gitpaste_address %>:<%= @gitpaste_port %>/
-        </Location>
+	</Location>
+	<Location "/admin">
+		Order Deny,Allow
+		Deny from all
+	</Location>
+
 </VirtualHost>
